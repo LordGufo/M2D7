@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ricerca lavori</title>
+
+    <script src="node.js"></script>
+    <script>
+        function searchJobs(jobTitle, jobLocation) {
+            const lowercaseTitle = jobTitle.toLowerCase();
+            const lowercaseLocation = jobLocation.toLowerCase();
+
+            const result = [];
+            let count = 0;
+
+            for (let i = 0; i < jobs.length; i++) {
+                const job = jobs[i];
+                const lowercaseJobTitle = job.title.toLowerCase();
+                const lowercaseJobLocation = job.location.toLowerCase();
+
+                if (
+                    lowercaseJobTitle.includes(lowercaseTitle) &&
+                    lowercaseJobLocation.includes(lowercaseLocation)
+                ) {
+                    const { description, requirements, benefits, company_profile, ...filteredJob } = job;
+                    result.push(filteredJob);
+                    count++;
+                }
+            }
+
+            return {
+                result,
+                count
+            };
+        }
+        function handleSearch() {
+            const jobTitleInput = document.getElementById('job-title');
+            const jobLocationInput = document.getElementById('job-location');
+            const jobTitle = jobTitleInput.value;
+            const jobLocation = jobLocationInput.value;
+            const searchResult = searchJobs(jobTitle, jobLocation);
+            const resultContainer = document.getElementById('search-result');
+            resultContainer.innerHTML = '';
+
+            if (searchResult.count > 0) {
+                const resultList = document.createElement('ul');
+                for (const job of searchResult.result) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Title: ${job.title}, Location: ${job.location}`;
+                    resultList.appendChild(listItem);
+                }
+                resultContainer.appendChild(resultList);
+            } else {
+                const noResultMessage = document.createElement('p');
+                noResultMessage.textContent = 'Nessun risultato trovato.';
+                resultContainer.appendChild(noResultMessage);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <label for="job-title">Titolo lavorativo:</label>
+    <input type="text" id="job-title">
+
+    <label for="job-location">Posizione:</label>
+    <input type="text" id="job-location">
+
+    <button onclick="handleSearch()">Cerca</button>
+
+    <div id="search-result"></div>
+</body>
+
+</html>
+
+
+<!-- ho cofuso le cartelle di destinazione del lavoro del d7 spero che sia la cartella giusta!! -->
